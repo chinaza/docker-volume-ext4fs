@@ -1,0 +1,43 @@
+{
+  "description": "ext4fs plugin for Docker - Create and mount ext4 filesystem volumes with support for size",
+  "documentation": "https://github.com/chinaza/docker-ext4fs-plugin",
+  "interface": {
+    "socket": "ext4fs.sock",
+    "types": ["docker.volumedriver/1.0"]
+  },
+  "entrypoint": ["/docker-volume-ext4fs"],
+  "network": {
+    "type": "none"
+  },
+  "mounts": [
+    {
+      "name": "state",
+      "source": "/var/lib/docker/plugins/",
+      "settable": ["source"],
+      "destination": "/mnt/state",
+      "options": ["rbind"],
+      "type": "bind"
+    },
+    {
+      "name": "fsdir",
+      "source": "/mnt",
+      "settable": ["source"],
+      "destination": "/mnt/fs",
+      "options": ["rbind"],
+      "type": "bind"
+    }
+  ],
+  "propagatedmount": "/mnt/volumes",
+  "env": [
+    {
+      "name": "DEBUG",
+      "settable": ["value"],
+      "value": "0"
+    }
+  ],
+  "linux": {
+    "AllowAllDevices": true,
+    "Capabilities": ["CAP_SYS_ADMIN"],
+    "Devices": null
+  }
+}
